@@ -198,3 +198,4 @@ db.test.find()
 db.test.deleteMany({})
 db.test.find()
 // it deleted the documents only but didnt remove collection
+//db.test.drop()
