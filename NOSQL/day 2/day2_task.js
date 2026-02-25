@@ -58,7 +58,7 @@ db.inventory.updateOne(
 {upsert : true}
 )
 
-//c.	Try using the updateMany operation.
+//c.Try using the updateMany operation.
 db.inventory.updateMany(
 {item : "laptopDevice"},
 {
@@ -122,6 +122,7 @@ db.inventory.insertOne(
 }
 )
 db.inventory.find({_id : 1})
+
 db.inventory.update(
 {_id : 1},
 {
@@ -221,12 +222,3 @@ db.likes.aggregate(
 },
 ]
 )
-
-
-
-
-
-
-
-
-
