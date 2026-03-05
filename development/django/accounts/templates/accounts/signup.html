@@ -1,0 +1,545 @@
+{% extends "base.html" %}
+{% block title %}Sign Up — ITI-Market{% endblock %}
+
+{% block content %}
+<style>
+/* ══════════════════════════════════
+   SIGNUP FORM  +  CREATURE MEME
+   ══════════════════════════════════ */
+
+/* ---------- Layout ---------- */
+.signup-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10px;
+}
+.signup-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 12px 50px rgba(0,0,0,.12);
+  width: 440px;
+  overflow: visible;
+  position: relative;
+}
+
+/* ---------- Creature stage ---------- */
+.creature-stage {
+  background: linear-gradient(135deg, #6366f1, #818cf8, #a78bfa);
+  border-radius: 20px 20px 0 0;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* ── stars / sparkles in background ── */
+.creature-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.7), transparent),
+    radial-gradient(2px 2px at 60% 15%, rgba(255,255,255,.5), transparent),
+    radial-gradient(2px 2px at 80% 50%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.5px 1.5px at 35% 65%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.5px 1.5px at 75% 70%, rgba(255,255,255,.4), transparent),
+    radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,.35), transparent),
+    radial-gradient(2px 2px at 90% 25%, rgba(255,255,255,.55), transparent);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0%   { opacity: .6; }
+  100% { opacity: 1;  }
+}
+
+/* ══════════════════════════════
+   CREATURE (Pure CSS Monster)
+   ══════════════════════════════ */
+.creatures {
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+  position: relative;
+  bottom: -6px;
+}
+
+/* ── single creature ── */
+.creature {
+  width: 100px;
+  height: 90px;
+  border-radius: 50% 50% 48% 48%;
+  position: relative;
+  transition: transform .25s ease;
+}
+.creature.c1 { background: #fbbf24; }
+.creature.c2 { background: #34d399; width: 120px; height: 105px; }
+.creature.c3 { background: #f472b6; }
+
+/* ── Ears / horns ── */
+.creature.c1::before,
+.creature.c1::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 26px;
+  background: #fbbf24;
+  border-radius: 50% 50% 0 0;
+  top: -16px;
+}
+.creature.c1::before { left: 16px;  transform: rotate(-12deg); }
+.creature.c1::after  { right: 16px; transform: rotate(12deg);  }
+
+.creature.c2::before,
+.creature.c2::after {
+  content: '';
+  position: absolute;
+  width: 24px; height: 32px;
+  background: #34d399;
+  border-radius: 50% 50% 0 0;
+  top: -20px;
+}
+.creature.c2::before { left: 20px;  transform: rotate(-10deg); }
+.creature.c2::after  { right: 20px; transform: rotate(10deg);  }
+
+.creature.c3::before,
+.creature.c3::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 22px;
+  background: #f472b6;
+  border-radius: 50% 50% 0 0;
+  top: -14px;
+}
+.creature.c3::before { left: 14px;  transform: rotate(-14deg); }
+.creature.c3::after  { right: 14px; transform: rotate(14deg);  }
+
+/* ── Eye sockets ── */
+.eye-area {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  position: absolute;
+  top: 24px;
+  left: 0; right: 0;
+  transition: transform .3s ease;
+}
+.creature.c2 .eye-area { top: 28px; gap: 12px; }
+
+.eye {
+  width: 26px; height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.1);
+}
+.creature.c2 .eye { width: 32px; height: 32px; }
+
+.pupil {
+  width: 12px; height: 12px;
+  background: #1e1b4b;
+  border-radius: 50%;
+  position: absolute;
+  top: 7px; left: 7px;
+  transition: transform .12s ease-out;
+}
+.creature.c2 .pupil {
+  width: 14px; height: 14px;
+  top: 9px; left: 9px;
+}
+
+/* pupil highlight */
+.pupil::after {
+  content: '';
+  width: 4px; height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px; right: 2px;
+}
+
+/* ── Mouth ── */
+.mouth {
+  width: 20px; height: 10px;
+  border-bottom: 3px solid rgba(0,0,0,.25);
+  border-radius: 0 0 50% 50%;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all .3s ease;
+}
+.creature.c2 .mouth { width: 26px; height: 12px; bottom: 22px; }
+
+/* ── Paws (little bumps at bottom) ── */
+.paws {
+  display: flex;
+  gap: 22px;
+  position: absolute;
+  bottom: -2px;
+  left: 50%; transform: translateX(-50%);
+}
+.paw {
+  width: 22px; height: 12px;
+  border-radius: 50%;
+}
+.creature.c1 .paw { background: #f59e0b; }
+.creature.c2 .paw { background: #10b981; width: 26px; height: 14px; }
+.creature.c3 .paw { background: #ec4899; }
+
+/* ── Hands used to cover eyes ── */
+.hands {
+  position: absolute;
+  top: 16px; left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+  z-index: 5;
+}
+.creature.c2 .hands { top: 18px; }
+
+.hand {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateY(30px) scale(0.5);
+  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.creature.c2 .hand { width: 34px; height: 34px; }
+.creature.c1 .hand { background: #f59e0b; }
+.creature.c2 .hand { background: #10b981; }
+.creature.c3 .hand { background: #ec4899; }
+
+/* ── Password mode: hands cover eyes ── */
+.creatures.hide-eyes .hand {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.creatures.hide-eyes .pupil {
+  transform: translateY(10px) !important;
+}
+.creatures.hide-eyes .mouth {
+  border-bottom-color: transparent;
+  border-top: 3px solid rgba(0,0,0,.25);
+  border-radius: 50% 50% 0 0;
+  height: 8px;
+}
+
+/* Gentle idle float */
+.creature.c1 { animation: float1 3s ease-in-out infinite; }
+.creature.c2 { animation: float2 3.4s ease-in-out infinite; }
+.creature.c3 { animation: float3 2.8s ease-in-out infinite; }
+@keyframes float1 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes float2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes float3 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* When hiding, stop the float */
+.creatures.hide-eyes .creature {
+  animation-play-state: paused;
+}
+
+/* ══════════════════════
+   FORM STYLES
+   ══════════════════════ */
+.signup-form {
+  padding: 32px 36px 36px;
+}
+.signup-form h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e1b4b;
+  margin-bottom: 6px;
+}
+.signup-form .subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 28px;
+}
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  background: #fafafa;
+}
+.form-group input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99,102,241,.12);
+  background: #fff;
+}
+.form-group .input-icon {
+  position: absolute;
+  right: 14px;
+  top: 36px;
+  font-size: 18px;
+  opacity: .4;
+}
+
+.btn-signup {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: opacity .2s, transform .2s, box-shadow .2s;
+}
+.btn-signup:hover {
+  opacity: .92;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99,102,241,.4);
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+  color: #6b7280;
+}
+.login-link a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* ── Password strength bar ── */
+.strength-bar {
+  height: 4px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  transition: width .35s, background .35s;
+}
+
+/* ── Toggle pw visibility ── */
+.pw-toggle {
+  position: absolute;
+  right: 14px;
+  top: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: .45;
+  user-select: none;
+  transition: opacity .2s;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.pw-toggle:hover { opacity: .75; }
+
+</style>
+
+<div class="signup-wrapper">
+  <div class="signup-card">
+
+    <!-- ═══ CREATURE STAGE ═══ -->
+    <div class="creature-stage">
+      <div class="creatures" id="creatures">
+
+        <!-- Creature 1 – yellow -->
+        <div class="creature c1">
+          <div class="eye-area">
+            <div class="eye"><div class="pupil" data-pupil></div></div>
+            <div class="eye"><div class="pupil" data-pupil></div></div>
+          </div>
+          <div class="hands"><div class="hand"></div><div class="hand"></div></div>
+          <div class="mouth"></div>
+          <div class="paws"><div class="paw"></div><div class="paw"></div></div>
+        </div>
+
+        <!-- Creature 2 – green (big) -->
+        <div class="creature c2">
+          <div class="eye-area">
+            <div class="eye"><div class="pupil" data-pupil></div></div>
+            <div class="eye"><div class="pupil" data-pupil></div></div>
+          </div>
+          <div class="hands"><div class="hand"></div><div class="hand"></div></div>
+          <div class="mouth"></div>
+          <div class="paws"><div class="paw"></div><div class="paw"></div></div>
+        </div>
+
+        <!-- Creature 3 – pink -->
+        <div class="creature c3">
+          <div class="eye-area">
+            <div class="pupil" data-pupil></div>
+            <div class="eye"><div class="pupil" data-pupil></div></div>
+            <div class="eye"><div class="pupil" data-pupil></div></div>
+          </div>
+          <div class="hands"><div class="hand"></div><div class="hand"></div></div>
+          <div class="mouth"></div>
+          <div class="paws"><div class="paw"></div><div class="paw"></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══ FORM ═══ -->
+    <form class="signup-form" autocomplete="off">
+      {% csrf_token %}
+      <h2>Create Account</h2>
+      <p class="subtitle">Join ITI-Market today &#127881;</p>
+
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" placeholder="Ahmed Mohamed" data-track>
+        <span class="input-icon">&#128100;</span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="ahmed@example.com" data-track>
+        <span class="input-icon">&#9993;&#65039;</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" data-password>
+        <button type="button" class="pw-toggle" id="pwToggle">&#128065;</button>
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      </div>
+
+      <div class="form-group">
+        <label for="password2">Confirm Password</label>
+        <input type="password" id="password2" placeholder="••••••••" data-password>
+      </div>
+
+      <button type="submit" class="btn-signup">Sign Up &#128640;</button>
+      <p class="login-link">Already have an account? <a href="#">Log in</a></p>
+    </form>
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   CREATURE EYE-TRACKING  +  HIDE LOGIC
+   ═══════════════════════════════════════ */
+(() => {
+  const creatures   = document.getElementById('creatures');
+  const pupils      = document.querySelectorAll('[data-pupil]');
+  const pwFields    = document.querySelectorAll('[data-password]');
+  const trackFields = document.querySelectorAll('[data-track]');
+  const strengthFill = document.getElementById('strengthFill');
+  const pwToggle    = document.getElementById('pwToggle');
+  const pwInput     = document.getElementById('password');
+
+  let isHiding  = false;   // are we in "look away" mode?
+  let mouseX = 0, mouseY = 0;
+
+  /* ── Pupil movement helper ── */
+  function movePupils(clientX, clientY) {
+    pupils.forEach(p => {
+      const eye = p.closest('.eye');
+      if (!eye) return;
+      const rect = eye.getBoundingClientRect();
+      const eyeCX = rect.left + rect.width  / 2;
+      const eyeCY = rect.top  + rect.height / 2;
+
+      const dx = clientX - eyeCX;
+      const dy = clientY - eyeCY;
+      const angle = Math.atan2(dy, dx);
+      const dist  = Math.min(Math.hypot(dx, dy) / 12, 6);   // clamp movement
+
+      const tx = Math.cos(angle) * dist;
+      const ty = Math.sin(angle) * dist;
+      p.style.transform = `translate(${tx}px, ${ty}px)`;
+    });
+  }
+
+  /* ── Mouse move → pupils track cursor ── */
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!isHiding) movePupils(mouseX, mouseY);
+  });
+
+  /* ── Track-able inputs: pupils follow the caret position ── */
+  trackFields.forEach(input => {
+    input.addEventListener('input', () => {
+      if (isHiding) return;
+      const rect = input.getBoundingClientRect();
+      // Estimate caret x from text length
+      const charW = 8.5;
+      const caretX = rect.left + 16 + Math.min(input.value.length * charW, rect.width - 32);
+      const caretY = rect.top + rect.height / 2;
+      movePupils(caretX, caretY);
+    });
+    input.addEventListener('focus', () => {
+      isHiding = false;
+      creatures.classList.remove('hide-eyes');
+      const rect = input.getBoundingClientRect();
+      movePupils(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    });
+  });
+
+  /* ── Password fields → cover eyes ── */
+  pwFields.forEach(f => {
+    f.addEventListener('focus', () => {
+      isHiding = true;
+      creatures.classList.add('hide-eyes');
+    });
+    f.addEventListener('blur', () => {
+      isHiding = false;
+      creatures.classList.remove('hide-eyes');
+      movePupils(mouseX, mouseY);
+    });
+  });
+
+  /* ── Password strength indicator ── */
+  pwInput.addEventListener('input', () => {
+    const v = pwInput.value;
+    let score = 0;
+    if (v.length >= 6)  score++;
+    if (v.length >= 10) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+
+    const pct    = Math.min(score / 5 * 100, 100);
+    const colors = ['#ef4444','#f97316','#eab308','#22c55e','#10b981'];
+    strengthFill.style.width      = pct + '%';
+    strengthFill.style.background = colors[Math.min(score, colors.length) - 1] || '#e5e7eb';
+  });
+
+  /* ── Toggle password visibility ── */
+  pwToggle.addEventListener('click', () => {
+    const isText = pwInput.type === 'text';
+    pwInput.type = isText ? 'password' : 'text';
+    pwToggle.textContent = isText ? '👁' : '🙈';
+  });
+
+  /* ── Initial position: look straight at viewer ── */
+  movePupils(window.innerWidth / 2, window.innerHeight / 3);
+})();
+</script>
+
+{% endblock %}
