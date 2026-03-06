@@ -1,0 +1,62 @@
+[
+  {
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+      "name": "Apple MacBook Air 2020 13\" Intel Core i5 1.1GHz 8GB RAM 256GB SSD Space Gray | macOS",
+      "price": "279.00",
+      "stock_count": 12,
+      "image": "products/large-2020_Apple_MacBook_Air_Gray_2__09076__51390.jpg"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+      "name": "Apple MacBook Air 2020 13\" Intel Core i7 1.2GHz 16GB RAM 512GB SSD Space Gray | macOS Sequoia",
+      "price": "391.00",
+      "stock_count": 5,
+      "image": "products/large-2020_Apple_MacBook_Air_Gray_4__17878.jpg"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+      "name": "Gaming PC Desktop AMD Ryzen 5 5500 up to 4.2GHz, Radeon RX 590 8G, 16GB DDR4, 512GB SSD, WiFi 6, RGB Fan x5, Windows 11 Home",
+      "price": "32402.00",
+      "stock_count": 7,
+      "image": "products/firstpc.webp"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+      "name": "Skytech Gaming Azure 3 PC, AMD Ryzen 7 9700X 3.8GHz, NVIDIA RTX 5060, 1TB NVMe SSD, 32GB DDR5 RAM 6000, 850W Gold ATX PSU, 360 ARGB AIO, Wi-Fi, Win 11",
+      "price": "68792.50",
+      "stock_count": 4,
+      "image": "products/secondpc.webp"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+      "name": "White Gaming Chair, Ergonomic Massage Computer Office Chair with Footrest, Adjustable Lumbar Support, Reclining Racing Chair",
+      "price": "6778.60",
+      "stock_count": 15,
+      "image": "products/first-chair.webp"
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+      "name": "Dowinx Gaming Chair Fabric with Pocket Spring Cushion, Ergonomic Computer Chair with Footrest, 2 Sizes Available — Top Reviewed for Comfort",
+      "price": "7477.00",
+      "stock_count": 20,
+      "image": "products/second_chair.webp"
+    }
+  }
+]

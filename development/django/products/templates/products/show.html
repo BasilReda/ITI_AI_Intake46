@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} — ITI-Market{% endblock %}
+
+{% block content %}
+<style>
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-bottom: 26px; padding: 9px 20px;
+    background: #f3f4f6; color: #374151;
+    border-radius: 8px; text-decoration: none;
+    font-weight: 700; font-size: 14px;
+    border: 1px solid #e5e7eb;
+    transition: background .2s;
+  }
+  .back-btn:hover { background: #e5e7eb; }
+
+  .detail-wrap {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 36px;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+    max-width: 960px;
+  }
+  .detail-img {
+    background: #f8f9fb;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+    min-height: 360px;
+  }
+  .detail-img img { max-width: 100%; max-height: 340px; object-fit: contain; }
+  .detail-img-placeholder {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #9ca3af; gap: 14px;
+    font-size: 80px;
+  }
+  .detail-info { padding: 36px 36px 36px 0; display: flex; flex-direction: column; }
+  .detail-brand { font-size: 14px; color: #9ca3af; font-weight: 600; margin-bottom: 10px; }
+  .detail-name  { font-size: 20px; font-weight: 800; color: #1e1b4b; line-height: 1.5; margin-bottom: 20px; }
+  .detail-price {
+    font-size: 30px; font-weight: 900; color: #dc2626;
+    margin-bottom: 24px;
+  }
+  .detail-price-quote {
+    font-size: 16px; font-weight: 700; color: #dc2626; margin-bottom: 24px; line-height: 1.8;
+  }
+  .spec-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+  .spec-table tr { border-bottom: 1px solid #f3f4f6; }
+  .spec-table tr:last-child { border-bottom: none; }
+  .spec-table td { padding: 12px 8px; font-size: 15px; }
+  .spec-table td:first-child { color: #6b7280; font-weight: 600; width: 160px; }
+  .spec-table td:last-child  { color: #111827; font-weight: 700; }
+  .stock-pill {
+    display: inline-block; padding: 4px 14px; border-radius: 30px;
+    font-size: 13px; font-weight: 700;
+  }
+  .in-stock  { background: #d1fae5; color: #065f46; }
+  .low-stock { background: #fef3c7; color: #92400e; }
+  .no-stock  { background: #fee2e2; color: #991b1b; }
+  .btn-add {
+    margin-top: auto;
+    display: inline-block; padding: 13px 32px;
+    background: linear-gradient(90deg,#6366f1,#818cf8);
+    color: #fff; border-radius: 8px;
+    text-decoration: none; font-weight: 800; font-size: 16px;
+    text-align: center; transition: opacity .2s, transform .2s;
+    align-self: flex-start;
+  }
+  .btn-add:hover { opacity:.88; transform:translateY(-2px); }
+</style>
+
+<a href="{% url 'products_index' %}" class="back-btn">&#8592; Back to Products</a>
+
+<div class="detail-wrap">
+
+  <!-- Image panel -->
+  <div class="detail-img">
+    {% if product.image %}
+      <img src="{{ product.image }}" alt="{{ product.name }}">
+    {% else %}
+      <div class="detail-img-placeholder">
+        {% if "Chair" in product.name %}
+          <span>&#129681;</span>
+        {% elif "PC" in product.name or "Desktop" in product.name or "Gaming" in product.name %}
+          <span>&#128421;</span>
+        {% else %}
+          <span>&#128187;</span>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Info panel -->
+  <div class="detail-info">
+
+    <!-- Brand (dynamic) -->
+    {% if "Apple" in product.name or "MacBook" in product.name %}
+      <div class="detail-brand">Apple</div>
+    {% elif "Skytech" in product.name %}
+      <div class="detail-brand">Skytech Gaming</div>
+    {% elif "Dowinx" in product.name %}
+      <div class="detail-brand">Dowinx</div>
+    {% else %}
+      <div class="detail-brand">ITI-Market</div>
+    {% endif %}
+
+    <div class="detail-name">{{ product.name }}</div>
+
+    {% if product.price == 0 %}
+      <div class="detail-price-quote">
+        Call For Quote<br>
+        &#128222; 1-844-466-9142
+      </div>
+    {% else %}
+      {% if "Chair" in product.name or "Gaming PC" in product.name or "Skytech" in product.name %}
+        <div class="detail-price">EGP {{ product.price }}</div>
+      {% else %}
+        <div class="detail-price">${{ product.price }}</div>
+      {% endif %}
+    {% endif %}
+
+    <!-- Spec table -->
+    <table class="spec-table">
+      <tr>
+        <td>Product ID</td>
+        <td>#{{ product.id }}</td>
+      </tr>
+      <tr>
+        <td>Brand</td>
+        <td>
+          {% if "Apple" in product.name or "MacBook" in product.name %}Apple
+          {% elif "Skytech" in product.name %}Skytech Gaming
+          {% elif "Dowinx" in product.name %}Dowinx
+          {% elif "AMD" in product.name %}AMD / Custom Build
+          {% else %}ITI-Market{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>Category</td>
+        <td>
+          {% if "MacBook" in product.name or "Laptop" in product.name %}Laptops
+          {% elif "Chair" in product.name %}Office &amp; Gaming Chairs
+          {% elif "PC" in product.name or "Desktop" in product.name or "Gaming" in product.name %}Desktop PCs
+          {% else %}Electronics{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>Availability</td>
+        <td>
+          {% if product.stock_count == 0 %}
+            <span class="stock-pill no-stock">Out of Stock</span>
+          {% elif product.stock_count <= 3 %}
+            <span class="stock-pill low-stock">Only {{ product.stock_count }} left!</span>
+          {% else %}
+            <span class="stock-pill in-stock">In Stock ({{ product.stock_count }} units)</span>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>Condition</td>
+        <td>
+          {% if "MacBook" in product.name or "Laptop" in product.name %}Refurbished
+          {% else %}New{% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>Warranty</td>
+        <td>90-Day ITI-Market Warranty</td>
+      </tr>
+    </table>
+
+    <a href="{% url 'products_index' %}" class="btn-add">&#128722; Continue Shopping</a>
+  </div>
+
+</div>
+{% endblock %}

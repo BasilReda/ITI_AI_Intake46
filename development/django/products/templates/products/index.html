@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}All Products — ITI-Market{% endblock %}
+
+{% block content %}
+<style>
+  /* ── Product Grid ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background: transparent;
+  }
+
+  /* ── Base card ── */
+  .product-card {
+    border: 1px solid #dde1e7;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    transition:
+      transform    .35s cubic-bezier(.25,.46,.45,.94),
+      box-shadow   .35s ease,
+      filter       .35s ease,
+      opacity      .35s ease;
+    will-change: transform, filter;
+  }
+
+  /* ── When ANY card in the grid is hovered → dim + blur ALL others ── */
+  .products-grid:has(.product-card:hover) .product-card:not(:hover) {
+    filter:  blur(3px) brightness(0.6);
+    transform: scale(0.95);
+    opacity: 0.65;
+  }
+
+  /* ── The hovered card itself → zoom up, glow ── */
+  .product-card:hover {
+    transform: scale(1.06);
+    box-shadow:
+      0 0 0 3px #6366f1,
+      0 20px 50px rgba(99,102,241,.35),
+      0 8px 24px rgba(0,0,0,.18);
+    z-index: 10;
+    border-color: #6366f1;
+    filter: brightness(1.04);
+  }
+
+  /* ── Image wrapper ── */
+  .product-img-wrap {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fb;
+    padding: 18px;
+  }
+  .product-img-wrap img {
+    max-width: 100%; max-height: 100%;
+    object-fit: contain;
+    transition: transform .45s cubic-bezier(.25,.46,.45,.94);
+  }
+  /* Image zooms inside while card is focused */
+  .product-card:hover .product-img-wrap img {
+    transform: scale(1.14);
+  }
+
+  /* ── Spotlight overlay that appears on hover ── */
+  .product-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+      rgba(99,102,241,.07) 0%,
+      rgba(236,72,153,.04) 100%);
+    opacity: 0;
+    transition: opacity .35s ease;
+    pointer-events: none;
+    border-radius: 10px;
+  }
+  .product-card:hover::after { opacity: 1; }
+
+  /* ── Info body ── */
+  .product-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #b0b8c9; gap: 10px;
+  }
+  .product-img-placeholder span { font-size: 52px; }
+  .product-img-placeholder p   { font-size: 13px; }
+  .product-body { padding: 16px 18px 20px; flex: 1; display: flex; flex-direction: column; }
+  .product-brand { font-size: 13px; color: #9ca3af; margin-bottom: 6px; }
+  .product-name  {
+    font-size: 14px; color: #374151; line-height: 1.55;
+    margin-bottom: 12px; flex: 1;
+    transition: color .25s;
+  }
+  .product-card:hover .product-name { color: #1e1b4b; }
+  .product-price {
+    font-size: 18px; font-weight: 800; color: #dc2626;
+    margin-bottom: 14px;
+  }
+  .price-quote {
+    font-size: 13px; color: #dc2626; font-weight: 700; line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .btn-show {
+    display: inline-block; padding: 9px 22px;
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+    color: #fff; border-radius: 6px;
+    text-decoration: none; font-weight: 700; font-size: 14px;
+    text-align: center;
+    transition: opacity .2s, transform .2s, box-shadow .2s;
+    align-self: flex-start;
+  }
+  .btn-show:hover {
+    opacity: .9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99,102,241,.45);
+  }
+  .stock-badge {
+    display: inline-block; font-size: 12px; padding: 2px 9px;
+    border-radius: 20px; margin-bottom: 10px; font-weight: 600;
+  }
+  .in-stock   { background: #d1fae5; color: #065f46; }
+  .low-stock  { background: #fef3c7; color: #92400e; }
+  .no-stock   { background: #fee2e2; color: #991b1b; }
+</style>
+
+<span class="page-title">&#128187; Products</span>
+
+{% if products %}
+<div class="products-grid">
+  {% for product in products %}
+  <div class="product-card">
+
+    <!-- Image -->
+    <div class="product-img-wrap">
+      {% if product.image %}
+        <img src="{{ product.image }}" alt="{{ product.name }}">
+      {% else %}
+        <div class="product-img-placeholder">
+          <span>&#128187;</span>
+          <p>No Image</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="product-body">
+      <div class="product-brand">
+        {% if "Apple" in product.name or "MacBook" in product.name %}Apple
+        {% elif "Skytech" in product.name %}Skytech Gaming
+        {% elif "Dowinx" in product.name %}Dowinx
+        {% elif "AMD" in product.name %}AMD / Custom Build
+        {% else %}ITI-Market{% endif %}
+      </div>
+      <div class="product-name">{{ product.name }}</div>
+
+      <!-- Stock badge -->
+      {% if product.stock_count == 0 %}
+        <span class="stock-badge no-stock">Out of Stock</span>
+      {% elif product.stock_count <= 3 %}
+        <span class="stock-badge low-stock">Only {{ product.stock_count }} left</span>
+      {% else %}
+        <span class="stock-badge in-stock">In Stock: {{ product.stock_count }}</span>
+      {% endif %}
+
+      <!-- Price -->
+      {% if product.price == 0 %}
+        <div class="price-quote">
+          Call For Quote<br>
+          <span style="font-size:14px;">&#128222; 1-844-466-9142</span>
+        </div>
+      {% elif "Chair" in product.name or "Gaming PC" in product.name or "Skytech" in product.name %}
+        <div class="product-price">EGP {{ product.price }}</div>
+      {% else %}
+        <div class="product-price">${{ product.price }}</div>
+      {% endif %}
+
+      <a href="{% url 'products_show' product.id %}" class="btn-show">View Details</a>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+  <p style="color:#6b7280; margin-top:20px;">No products available yet.</p>
+{% endif %}
+{% endblock %}
