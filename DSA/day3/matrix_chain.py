@@ -1,6 +1,6 @@
 def matrix_chain(dimensions):
     n = len(dimensions) - 1
-    m = {(i, j): float("inf") for i in range(1, n+1) for j in range(i, n+1)}
+    m = {(i, j): 0 for i in range(1, n+1) for j in range(i, n+1)}
     
     for length in range(2, n+1):
         for i in range(1, n-length+2):
