@@ -1,0 +1,3 @@
+results/
+ner_model/
+quantized_ner_model/
