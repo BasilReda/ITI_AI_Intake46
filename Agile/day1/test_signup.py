@@ -62,8 +62,12 @@ class TestRegistrationValidation(unittest.TestCase):
         user_too_short = UserRegistrationData("ab", "test@test.com", "SecurePass1")
         errors = validate_registration(user_too_short)
         self.assertIn("Username must be 3-20 alphanumeric characters.", errors)
-
     
+    def test_username_below_minimum(self):
+        user_too_short = UserRegistrationData("_aab", "test@test.com", "SecurePass1")
+        errors = validate_registration(user_too_short)
+        self.assertIn("Username must be 3-20 alphanumeric characters.", errors)
+
     def test_username_above_maximum(self):
         user_more_max = UserRegistrationData("a" * 21, "test@test.com", "SecurePass1")
         errors = validate_registration(user_more_max)
