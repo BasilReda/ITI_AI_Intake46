@@ -1,0 +1,6 @@
+yolo26n.pt
+yolov8n.pt
+datasets/
+runs/
+bus.jpg
+mnist_data/
